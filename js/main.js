@@ -1,3 +1,9 @@
+/*
+ *  Ron Larson
+ *  WDI Fundamentals - Boston (Liberty Mutual)
+ *  3/19/17
+ */
+ 
 // Global Variables
 
 /* UNIT 7 - Define each card as separate global variables
@@ -56,7 +62,14 @@ var checkForMatch = function () {
 
 // Function: flipCard
 // Purpose: User flips a card
-var flipCard = function (cardId) {
+
+/* UNIT 11 - Remove cardId function parameter to no longer hard-code the
+ *            index number of the card that should be flipped.
+ *
+ * var flipCard = function (cardId) {
+ */
+
+ var flipCard = function() {
 
 	/* UNIT 8 - Commented out
 	 *
@@ -75,6 +88,10 @@ var flipCard = function (cardId) {
 	 * console.log("User flipped " + cardTwo);
 	 */
 
+    // UNIT 11 - Get and store data-id attribute of the card that was just clicked
+	//         - Use 'this' keyword to access the card that was just clicked
+	var cardId = this.getAttribute('data-id'); 
+
     // Display card that was flipped over
     // -- UNIT 10:  Added access of object properties
     console.log("User flipped " + cards[cardId].rank);
@@ -83,6 +100,10 @@ var flipCard = function (cardId) {
 
     // Add flipped card to cardsInPlay array
     cardsInPlay.push(cards[cardId].rank);
+
+    // UNIT 11 - Display image for the face of clicked card in place of the back of the card
+	//         - Use 'this' keyword to access the card that was just clicked
+	this.setAttribute('src', cards[cardId].cardImage);    
 
 	// Check if 2 cards have been played
 	if (cardsInPlay.length === 2) {
@@ -98,6 +119,28 @@ var flipCard = function (cardId) {
 	}
 }
 
-// Simulate user flipping a card
-flipCard(0);  // Flip first card in card array
-flipCard(2);  // Flip third card in card array
+// UNIT 11 - Create game board
+var createBoard = function() {
+	// Add each card to the game board
+	for (var i = 0; i < cards.length; i++) {
+		// Create new img card element
+		var cardElement = document.createElement('img');
+		// Add a src attribute to the cardElement pointing to card's back image
+		cardElement.setAttribute('src', 'images/back.png');
+		// Set cardElement's new data-id attribute to index of current element (i)
+		cardElement.setAttribute('data-id', i);
+		// Add flipCard Event Listener upon user click to cardElement
+		cardElement.addEventListener('click', flipCard);
+		// Append current cardElement to game board (game-board element ID)
+		document.getElementById('game-board').appendChild(cardElement);
+	}
+}
+
+/* UNIT 10 - Make calls to flip card
+ * // Simulate user flipping a card
+ * flipCard(0);  // Flip first card in card array
+ * flipCard(2);  // Flip third card in card array
+ */
+
+// UNIT 11 - Create game board by calling gameBoard function
+createBoard(); 
